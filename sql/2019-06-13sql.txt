@@ -1,0 +1,355 @@
+C:\TEMP
+
+pet_table.txt(텍스트문서 형식)
+
+으로 엑셀 저장한 파일 불러오기
+========================
+< database webdb >
+create database webdb;
+use webdb;
+
+show databases;
+
+show tables;
+
+create table pet(
+name varchar(20),
+owner varchar(20),
+species varchar(20),
+sex char(1),
+birth date,
+death date
+);
+
+show tables;
+
+drop table pet;
+
+< 코드를 통해 삽입 >
+insert into pet values ('Fluffy', 'Harold','cat','f','1999-02-04', null); 
+select * from pet;
+
+< 텍스트문서.txt형태의 엑셀파일로 table에 값 삽입 >
+load data local infile 'C:/TEMP/pet_table.TXT' into table pet;
+
+show variables like 'secure-file%';
+
+select * from pet;
+
+select * from pet where name='Bowser';
+
+select * from pet where birth>= '1998-01-01';
+
+select * from pet where species='dog' AND sex = 'f';
+
+select * from pet where species='snake' OR species='bird';
+
+select name, birth from pet;
+
+-- 오름차순 정렬
+select name, birth from pet order by birth; 
+
+-- 내림차순 정렬
+select name, birth from pet order by birth desc; 
+
+-- null값이 아닌 것만 불러오기
+select name from pet where death is not null; 
+-- null값인것만 불러오기
+select name from pet where death is null; 
+
+--b로 시작
+select * from pet where name like 'b%'; 
+
+--fy로 끝남
+select * from pet where name like '%fy';
+
+-- w포함
+select * from pet where name like '%w%';
+
+-- 다섯글자
+select * from pet where name like '_____';
+
+-- regexp 정규표현식으로 찾겠다., b로 시작
+select * from pet where name regexp '^b'; 
+
+-- fy로 끝남
+select * from pet where name regexp 'fy$'; 
+
+-- 전체 데이터의 갯수
+select count(*) from pet; 
+
+-- 데이터를 수정하지 못하게 막아두는 게 sql_safe_updates
+set sql_safe_updates=0; 
+select * from pet;
+
+-- 이름이 claws인 데이터의 종을 dog로 수정
+update pet set species = 'dog' where name='Claws'; 
+select * from pet;
+
+-- 생일이 1990년 이전인 데이터의 종을 pig로 수정
+update pet set species = 'pig' where birth<'1990-01-01'; 
+select * from pet;
+
+====================================
+< database sqldb >
+ -- 활성화
+use sqldb;
+show tables;
+
+select * from usertbl where name='김경호';
+select * from usertbl where birthyear>=1970 and height>=182;
+
+select userid, name from usertbl where height>=182 and height<=182;
+select userid, name from usertbl where height between 180 and 182;
+
+select name, addr from usertbl where addr = '경남'or addr = '전남' or addr = '경북';
+select name, addr from usertbl where addr in('경남','전남','경북');
+
+select name, height from usertbl where name like '김%';
+select name, height from usertbl where name like '_종신'; // 성이 한글자이고, 이름이 종신이 사람 출력
+
+select name, height from usertbl where height>177;
+김경호의 키보다 큰 사람의 데이터를 뽑으시오.
+select name, height from usertbl where height>(select height from usertbl where name='김경호');
+-- where height > (서브쿼리)
+
+-- 주소가 경남인 사람의 키보다 큰 사람들.. 이름 키
+select name, height from usertbl where height > (select height from usertbl where addr ='경남');
+-- 주소가 경남인 사람이 두명이라 위에 실행문 에러 발생하게 됨
+select height from usertbl where addr ='경남';
+
+select name, height from usertbl 
+	where height > all(select height from usertbl 
+		where addr ='경남');
+        
+select name, height from usertbl 
+	where height > any(select height from usertbl 
+		where addr ='경남');
+
+select * from usertbl;
+-- 경남에 거주하는 사람의 키와 동일한 사람들..
+select name, height from usertbl 
+	where height = any(select height from usertbl
+			where addr = '경남')
+select name, height from usertbl 
+	where height in (select height from usertbl
+			where addr = '경남');
+
+
+-- 이름과 가입일자 출력/ 가입일자 기준으로 오름차순 정렬
+select name, mdate from usertbl order by mdate;
+-- 내림차순 정렬
+select name, mdate from usertbl order by mdate desc;
+
+-- 이름, 키를 출력/ 키는 오름차순/ 이름은 내림차순
+select name, height from usertbl order by height, name desc;
+
+
+-- 주소가 중복되지 않는 unique한 주소값만 출력
+select distinct addr from usertbl;
+
+
+-- employee db에서 employee table의 emp_no, hire_date를 출력
+--  hire_date를 출력하되 hire_date 오름차순으로
+show databases;
+use employees; //employees db활성화
+select emp_no, hire_date from employees order by hire_date;
+
+-- 입사기간이 가장 오래된 다섯명의 emp_no와 hire_date를 출력
+select emp_no, hire_date from employees 
+	order by hire_date asc limit 5;
+
+-- 입사기간이 가장 오래된 다섯명의 emp_no와 hire_date를 출력
+-- 10번째부터 20번째까지 출력, start, 갯수
+select emp_no, hire_date from employees 
+	order by hire_date asc limit 10, 10;
+====================================
+< table 생성시 기존에 있던 table 그대로 가져오기 >
+-- 기존 방식
+create table buytbl2(
+col, type, constraint 
+);
+
+use sqldb;
+create table buytbl2(select * from buytbl);
+
+select * from buytbl2;
+show tables;
+
+
+-- 특정 feature만 가져오기
+create table buytbl3(select userid, prodname from buytbl);
+
+select * from buytbl3;
+show tables;
+
+-- groupby
+select userid, sum(amount) from buytbl
+	group by userid;
+
+-- 칼럼명 변경
+-- 칼럼명을 아이디, 총구매개수
+select userid as 아이디, sum(amount) as 총구매개수
+	from buytbl group by userid;
+
+select userid 아이디, avg(amount) 평균구매개수
+	from buytbl group by userid;
+
+select userid 아이디, sum(amount*price) 총구매금액
+	from buytbl group by userid;
+-- 총구매금액으로 오름차순 정렬
+select userid 아이디, sum(amount*price) 총구매금액
+	from buytbl group by userid order by 총구매금액;
+
+
+select * from usertbl;
+select min(height), max(height) from usertbl;
+
+
+-- 가장 키큰 사람의 이름과 키 출력
+-- 가장 키가 작은 사람의 이름과 키 출력
+select name, height from usertbl where
+	height in( (select max(height) from usertbl),
+    (select min(height) from usertbl) );
+
+select name, height from usertbl where
+	height = (select max(height) from usertbl) or
+    height = (select min(height) from usertbl) ;
+
+
+-- usertbl의 데이터 갯수 출력
+select count(*) from usertbl;
+
+-- 휴대전화를 가지고 있는 사람의 개수를 출력
+select count(*) from usertbl 
+	where mobile1 is not null and mobile2 is not null;
+select count(*) as 전화번호등록자수 from usertbl
+	where mobile1 is not null;
+-- 알아서 null값을 제외하고 카운트
+select count(mobile1) as 전화번호등록자수 from usertbl;
+========================================
+select * from buytbl;
+-- 아이디별 총구매금액
+select userid, sum(price*amount) as tm from buytbl 
+	group by userid; 
+-- 아이디별 총 구매금액이 1000이상인 것
+select userid, sum(price*amount) as tm 
+	from buytbl
+    	group by userid
+   	 having tm >= 1000;
+-- group by시 조건은 where이 아닌 having으로 해야한다.
+
+select userid, sum(price*amount) as tm 
+	from buytbl
+    	group by userid
+    	having tm >= 1000
+    	order by tm;
+-- 위의 출력값을 오름차순으로 정렬
+
+=============================================
+
+< 테이블 만들고, 값 지정하고, 수정하기 >
+use sqldb; 
+
+create table testtbl1(
+id int,
+username char(3),
+age int
+);
+
+-- 값 넣기
+insert into testtbl1 values (1, '홍길동', 25);
+-- age는 null값안쓰고 null값이 되도록 하는방법은 각각의 colum명 지정(mapping).
+insert into testtbl1(id, username) values (2, '설현');
+insert into testtbl1(username, age, id) values ('초아', 26, 3);
+
+-- 테이블 확인
+select * from testtbl1; 
+
+
+
+
+
+
+create table testtbl2(
+id int auto_increment primary key,
+username char(3),
+age int
+);
+
+insert into testtbl2 values(null, '지민', 25);
+insert into testtbl2 values(null, '유나', 22);
+insert into testtbl2 values(null, '유경', 21);
+
+-- id가 순서대로 자동으로 입력된걸 확인
+-- 쇼핑몰 넘버링할때 많이 쓰임, 사람이 지정해주면 누락이 발생할 수있음
+select * from testtbl2;
+
+
+
+
+
+
+-- 대량 데이터 가져오기
+use sqldb;
+create table testtbl5(
+	select emp_no, first_name, last_name
+	from employees.employees
+);
+
+
+
+
+
+
+-- 구조까지 만들어준 상태에서
+-- 값을 넣는 과정에서 다른 데이터 가져와서 넣기
+create table testtbl4(
+id int, 
+fname varchar(50), 
+lname varchar(50)
+);
+
+insert into testtbl4
+select emp_no, first_name, last_name
+from employees.employees;
+
+
+
+=====================================
+< data 수정 - update이용>
+
+-- 데이터 수정
+select * from testtbl4 where fname = 'Parto';
+
+update testtbl4
+set lname = '없음'
+where fname = 'Parto';
+
+
+-- buytbl의 price를 다 1.5배로 수정
+use sqldb;
+
+update buytbl
+set price = price * 1.5;
+
+select * from buytbl;
+
+
+=======================================
+< 데이터 삭제 >
+
+-- 데이터 삭제
+select * from testtbl4 where fname = 'Aamer';
+delete from testtbl4 where fname = 'Aamer';
+-- 삭제 확인
+select * from testtbl4 where fname = 'Aamer';
+
+
+
+-- 228명 중 100명만 삭제
+select count(*) from testtbl4 where fname = 'Parto';
+delete from testtbl4 where fname = 'Parto' limit 100;
+-- 128명 남은 거 확인
+select count(*) from testtbl4 where fname = 'Parto';
+
