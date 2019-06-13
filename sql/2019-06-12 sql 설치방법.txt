@@ -2,19 +2,23 @@ my SQL installer
 
 https://dev.mysql.com/downloads
 
-mysql-installer-community-8.0.16.0.msi 이거 다운로드받음
+기존에 설치했던거 설정-앱 및 기능에 가서 삭제하기(4개)
+
+mysql-installer-community-5.7.10.0 이거 다운로드받음
 No thanks, just start my download.선택
 
 비번 1234
 
 server name : MySQL
 
-customer로 실행
+custom로 실행
 
 화살표 방향 3개 추가
-MySQL Server 8.0.16
-MySQL Workbench 8.0.16
-Samples and Examples 8.0.16
+MySQL Server 5.7.10 X64
+MySQL Workbench 6.3.5 X64
+MySQL Notifier 1.1.6 X86
+MySQL Fabric 1.5.6 & MySQL Utilities 
+Samples and Examples 5.7.10
 
 execute
 
@@ -28,7 +32,7 @@ C:\Program Files\MySQL\MySQL Server 8.0\bin
 < 관리자 권한으로 cmd열고 명령어 입력 >
 cd...
 cd...
-employees
+cd employees
 
 mysql -u root -p
 비번 1234 입력하면 접속됨.
@@ -39,12 +43,15 @@ source employees.sql
 다 받은 후,
 show databases;
 
+exit
+
 =============================
 
 < SQL >
 데이터베이스는 대소문자 구분X
 
 ===============================
+여러개 할때는 드래그한 후,
 [번개] or [ctrl + shift + enter] 전체 순서대로 실행
 [번개 + | 커서] or [ctrl + enter] 한줄만 실행
 
