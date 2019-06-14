@@ -2,7 +2,8 @@ my SQL installer
 
 https://dev.mysql.com/downloads
 
-기존에 설치했던거 설정-앱 및 기능에 가서 삭제하기(4개)
+기존에 설치했던거 설정-앱 및 기능에 가서 삭제하기
++ c드라이브 program data 랑 program files에서 mysql 폴더삭제
 
 mysql-installer-community-5.7.10.0 이거 다운로드받음
 No thanks, just start my download.선택
@@ -26,7 +27,7 @@ execute
 
 
 고급설정 - 환경변수 - Path에 주소 복사 
-C:\Program Files\MySQL\MySQL Server 8.0\bin
+C:\Program Files\MySQL\MySQL Server 5.7\bin
 
 
 < 관리자 권한으로 cmd열고 명령어 입력 >

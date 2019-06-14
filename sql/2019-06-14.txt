@@ -1,0 +1,64 @@
+cast : 데이터 타입 변환
+
+concat : 값을 연결, 이어주는 거
+as(별칭) column명 변경&지정
+
+//char은 string형식
+concat(char + char) 기본 형식
+concat(char + int)면 int가 자동의 char형식을 변환된 후 이어짐.
+
+select if(조건, 참일때 출력, 거짓일때 출력)
+
+nullif(100,100) 
+두개가 같은 값이면 null리턴/두개가 다르면 첫번째 인자 리턴
+
+SELECT CASE 10
+WHEN 1 THEN '일'
+WHEN 5 THEN '오'
+WHEN 10 THEN '십'
+ELSE '모름'
+END;
+case가 10이므로 '십'이 출력됨
+
+bit_lenght bit로 글자 길이 리턴 1byte = 8bit
+char_length는 글자 개수 리턴
+
+SELECT FORMAT(123456.123456, 4);
+소수점 4째자리까지 출력
+
+SELECT INSERT('abcdefghi', 3, 4, '@@@@'), 
+세번째자리 인덱스부터 4개를 @@@@로 대체
+
+ INSERT('abcdefghi', 3, 2, '@@@@');
+세번째부터 2개를 없애고 @@@@로 채움
+
+SELECT LPAD('이것이', 5, '##'), RPAD('이것이', 5, '##');
+rpad 이것을 다섯번 반복, 남는자리에 ##로 채워라.
+
+SELECT LTRIM(' 이것이'), RTRIM('이것이 ');
+오른쪽 / 왼쪽 공백 제거
+
+SELECT REPLACE ('이것이 MySQL이다', '이것이' , 'This is');
+수정
+
+SELECT REVERSE ('MySQL');
+순서를 바꿔줌
+
+SELECT CONCAT('이것이', SPACE(10), 'MySQL이다');
+SPACE 공백을 넓게 만들어줌.
+
+SELECT SUBSTRING('대한민국만세', 3, 2);
+세번째 자리부터 2개를 뽑아내라
+
+SUBSTRING_INDEX('cafe.naver.com', '.', -2);
+왼쪽부터 .기준으로 뽑아내고 나머지를 버려라.
+
+SELECT CEILING(4.7), FLOOR(4.7), ROUND(4.7);
+celing 이것보다 큰 정수, floor 이것보다 작은 정수, round는 반올림
+
+SELECT CONV('AA', 16, 2), CONV(100, 10, 8);
+16진수를 2진수로 변환, 10진수를 8진수로 변환
+
+SELECT MOD(157, 10), 157 % 10, 157 MOD 10;
+나머지 구하는 거
+
