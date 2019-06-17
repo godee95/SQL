@@ -1,0 +1,209 @@
+<load balance 예시 명령어>
+cd\ 	(PS C:\> 상태에서 접속)
+ssh adminuser@주소(DNS name)	 통신들어가기
+
+sudo yum install epel-release -y 	웹 쓰기위한 파일 다운로드
+sudo yum install nginx -y	웹 쓰기위한 파일 다운로드
+
+sudo systemctl start nginx 	웹으로 띄우기 위해 서버에 엔진 설치
+sudo systemctl enable nginx 	파일 권한 주기
+
+sudo passwd 	비밀번호1,1로 바꾸기
+su 	관리자권한으로 들어가기
+
+sudo find / -name "index.html" 
+echo "홈페이지에 띄울꺼" > /usr/share/nginx/html/index.html(위치)
+
+===================================================
+
+PowerShell이란?
+1. Object-based Shell
+2. CLI(Command Line Interface) 기반 : 명령어 기반
+3. GUI: GUI는 세부적인 정보 확인하는데 한계가 있다.
+4. Script가능
+5. NET Framework 기반
+
+PowerShell 어떤 상황에 사용?
+1. 반복 작업
+2. 세부적인 내용 확인
+3. 한꺼번에 여러 데이터 수정
+3. 일상적인 작업 신속하게 처리
+
+PowerShell 장점
+1. cmd.exe에서 사용하는 거의 모든 명령어 사용 가능
+2. cmd.exe에서 부족했던 Pipeline가능 사용 가능
+	cf. Pipeline(정의한 상태에서 다시 정의 / 앞의 명령어의 output을 뒤에 명령어에 input으로
+3. Cmdlet(command let)이 계속 늘어난다.
+cf. let : 모아둔거, command let : 명령어를 모아둔거
+4. 명령어의 구문이 이해하기 쉽다.(동사-명사-parameter 전치사-value 명사)
+5. 도움말 기능이 탁월하다
+6. 사용한 명령어와 관련된 명령어를 쉽게 알 수 있다.
+
+===================================
+관리자 접속
+
+<간단한 명령어>
+net users
+whoami
+net users administrator(세부적 내용)
+net users administrator /active:yes
+net users administrator *(암호 1, 1로 설정)
+net users user *(암호 설정)
+logoff(암호 1로 접속필요한 컴퓨터로 부팅)
+cls(앞에 쓴 내용 삭제)
+
+1) enable-PSRemotion
+2) Sel-item wsman
+3)방화벽
+
+
+get-netconnectionprofile | set-netconnectionprofile -networkcategory private
+enabl-PSRemoting -force
+Set-Item WSMan:\localhost\Client\TrustedHosts -value *
+ping pc1
+ping pc2
+invoke-command -computername pc1.pc3.pc6{shutdown -s -f -t 60} (원격으로 컴퓨터 죽이기)
+shutdown -a (shutdown취소)
+
+===========================================================
+
+stop-computer -force(컴퓨터 끄는거)
+start-sleep -seconds 60; stop-computer -force(60초 뒤에 컴퓨터 끄는거)
+start-sleep -seconds 60; (어떤 명령어 앞에도 이 친구를 쓸 수 있다.)
+
+cf. 세미콜론(;) A;B >>> A 와 B는 다른 명령어다, 각각의 명령어다. A실행 후, B 실행
+cf. 콘솔(console)작업(명령어 실행 해 관리) 후 server작업
+
+help 궁금한거 -Examples
+
+ii . ii는 invoke item 줄임말
+Get-Command Invoke-* (invoke로 시작하는 명령어 알려주세요)
+Get-Command *-item (item으로 끝나는 명령어 알려주세요)
+
+===============================================
+사용 명령어 메모장 저장
+
+start-transcript c:\mystory.txt
+명령어 사용
+Stop-Transcript
+
+================================================
+<creating and scaling a web app>
+1)resource group 생성 + network(스위치)+ app services 생성
+2)App services의 console 창 
+	dir
+	echo "원하는 문장" > index.html
+	dir
+3) 사이트 접속
+4) code. visualstudio 설치
+5) extensions에서 azure app service 설치후 file-index.html
+6) 추가하고 싶은 명령어 쓴 후 ctrl+s(저장)
+7) 사이트에 추가한 문장 덧붙여져서 나옴.
+
+
+***뭔가 문제 생겼을 시, domain으로 접속 시도***
+DNS zones >>> 도메인 이름 바꾸기. CNAME
+
+App Services 생성 후 URL 접속 안되면
+Custom domains-> add hostname 가서 유효성 검사(dns 있어야, domain 하나 사서 검사 가능).
+->이게 곧 공인된 dns(domain network services)
+
+최종적으로 App Services 생성 후 URL 바뀜
+==============================================
+<Azure AD 인증>-Enterprise applications
+website 계정만들때 카카오나 naver계정으로 회원가입 할 수 있는거 api있어야함(?)
+
+인증 같은 경우도 연결!
+
+==============================================
+app service >> deployment center >> github >> authorize >> login
+azure와 github 연결하는거 
+
+장점) 본인이 수정한거, 또는 수정 전 버전으로 돌아갈 수 있음
+	또한 여러 명이 동시에 개발 할 수 있음
+
+4차 산업혁명 : 연결/공유/수평적 관계 ----> 연결 및 공유
+ex. 우버, airbnb(집 빌려주는 거), youtube
+상대방이 잘 한 거를 이용할 줄 알아야!
+==============================================
+5장 networks
+==============================================
+virtual network란?
+
+1. 스위치 다르면 연결 안됨 but 연결되는 방법 있다(?). customizable routing
+2. host name(www.name.com->azure에서 알려줌?)/built-in 
+	but coustomizable DNS name resolution(글자->숫자로 바꿔줌)
+3. divided into one or more IP subnets(하나의 네트워크 여러개로 나눔)
+	cf. 반의어 supernet(나눠진 4개를 하나로 합침)
+4. 공인된 사설 IP가 만약 제공 안되면 본인이 수동으로 입력
+	사설 IP : 169.254
+5. vitual network과 virtual network 또는 premises(뜻 : 소유한 즉, 회사에서 소유한)과 virtual 연결
+	premises<->cloud(소유하고 있지 않지만 빌려서 쓰는거, 쓴 만큼 돈 지불)
+==============================================
+
+virtual network와 관련없는 자원(****시험언급*****)
+>> azure AD, traffic manager, content delivery network, and container registry
+
+==============================================
+	     NAT
+	load balance
+
+web1	web2	web3	web4
+
+(80 port로 들어오는) Load Balance 설치 이유
+1)부하 분산
+2)보안
+
+NAT with port 3389, 22
+공인 ip없는 web접속하기 위해 LB에 22 port로 접속한 후 동작 완료 이후 삭제
+
+==============================================
+Creating an Azure load balancer
+
+VM생성시 changing size : bm2
+	virtual machine stop시킨 후>>networking
+	>>attach network interface해서 새로 만들고
+	>>(nsg붙어 있는) 기존에 있던거 지워서 inbound port 없으니깐 추가해줌
+public IP addresses 생성
+load balancer 생성
+inbound NAT 생성 >> 사설 ip로 연결해주는 역할
+==============================================
+6장 Azure Storage
+==============================================
+Storage 저장소
+
+Blob : binary large of block, 모든 거(txt, doc, mpx, mp3, vhd 등) 다 저장하는거
+azure table storage : data base이용 없이 DB실행 가능한 거
+file server : ex)NAS(리눅스), backup용, azure에 파일 저장, 어디서든 어떤 기기로든 접속가능 4450port
+
+파일 내릴때(down load)만 돈을 냄, 올리때(upload)는 돈 안냄. 따라서, backup용으로 최적
+
+backup 목적 : restore하기 위해
+restore을 잘 못하는 이유? 해본적이 없어서..............
+==============================================
+
+storage account생성 , replication 항상 복제해둠.
+
+access tier
+1) cool 접근 잘 안함
+2) hot 접근 자주함, 비쌈
+
+public은 파일 업로드 후 URL하면 파일 공유됨
+private은 파일 업로드 후 URL하면 파일 공유안됨
+
+cf. youtube 동영상 url에서 youtobe앞에 ooo입력후 엔터치면 영상 다운로드 가능
+==============================================
+3장
+==============================================
+$profile
+	로그온 한 사용자의 프로파일이 저장될 경로가 보임
+$PSVersionTable
+
+
+help get-childitem -full
+	parameter 확인
+get-childitem | get-member
+	property, method 확인
+=============================================
+https://byeonp.azurewebsites.net
+

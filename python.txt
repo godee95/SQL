@@ -1,0 +1,97 @@
+https://github.com/kimtaehyeong?tab=repositories
+
+★★★★★★데이터 분석 시 자료형 매우 중요!!!!!!!★★★★★
+================================================
+원소값 바꾸지 못하는 거 : string, tuple
+
+ ※※※※※※※※
+lang = 'python programming'
+lang[7] = 'p' # 에러 발생 immutable하다!
+
+=============================================
+
+<text 분석시 많이 쓰임>
+
+ljust : 10자리로 표현 string자리를 left에서 부터 시작
+rjust : 10자리로 표현 string자리를 right에서 부터 시작
+
+//true, false로 출력 나옴
+startwith : 이걸로 시작하느냐
+endwith : 이걸로 끝나느냐
+
+replace : 대체
+
+find : 몇번째 인덱스가 있냐
+lang.find('r', i) : index i번째 이후로 r를 찾아라.
+rfind : 오른쪽부터 시작해서 몇번째 있느냐
+
+count : cd가 몇개가 들어가 있느냐
+
+strip : 스페이스(공백) 제거
+rstrip / lstrip
+
+split : 공백 기준으로 나눠 list로 분리
+split(',', 2) : , ','기준으로 2개 나눠라.
+fruit = 'apple banana grapes, orange, tomato, melon, lemon, watermelon'
+['apple banana grapes', /' orange', /' tomato', /' melon, lemon, watermelon']
+
+
+splitlines :  문장단위로 나눠 list에 담겠다.
+
+zfill : zero로 채워라. 10자리 만들고 0으로 채워라.
+
+''.join() : 이어서 붙여라
+
+sorted : 오른차순/ 내림차순(reverse=false) list정렬
+======================================================
+score = [80, 90, 75, 88, 92]
+score[1:4] : 1부터 3까지(마지막 4는 버림)
+
+
+a, b*
+b는 가변변수 : 여러개의 값을 받을 수 있음
+
+append : 리스트 맨 뒤(끝)에 추가
+exted : 또라른 리스트 붙여 줄때
+
+
+===================================
+sorted : 정렬 데이터만 정렬. 원본 정렬 못함
+sort : 원본 데이터를 정렬
+
+====================================
+
+list 값을 넣었다 뺐다 해주기 위해
+tuple 데이터 묶어주는 역할(연산 시 묶어서 사용해 주기도 함)!
+
+====================================
+둘다 삭제하는 기능은 같음
+
+discard  에러 안뜨고, 없으면 넘어가는거
+remove 삭제
+pop 임의 한 수 삭제
+=====================================
+
+j=0
+T_index=[]
+# i=0 , 6번의 갯수 T.count(6)=3
+#0,1,2 까지 돈다. 3번 돌고 끝나는 거
+for i in range(T.count(6)): 
+#6 인덱스 값 찾는거, j=인덱스 1에 있으니깐 k=1 
+# 다시 for문 돌아서 2부터 6찾음
+    k=T.index(6,j) 
+    T_index.append(k)
+    j=k+1
+    print(T_index)
+===================================
+
+dictionary
+
+키 : index역할한다고 생각 but 순서는 없고 랜덤하게 있음
+
+'blue' in colorpen
+blue라는 키를 기준으로 blue가 colorpen에 있냐 없냐
+
+setdefault 값 있으면 찾아주고 없으면 추가
+
+

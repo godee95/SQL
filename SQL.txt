@@ -1,0 +1,206 @@
+P@ssw0rd1234
+server name : byeondsserver.database.windows.net
+
+byeonds.eastus.cloudapp.azure.com
+
+https://byeon-secondary.z13.web.core.windows.net/
+
+https://byeon.z13.web.core.windows.net/
+==============================================
+명령어 정리
+sudo passwd root
+su root
+adminuser
+1
+1
+curl -sSL http://get.docker.com | sh
+systemctl start docker
+systemctl enable docker
+docker version
+su adminuser
+docker version
+su root
+httpd : 아파치???
+
+<history>
+    1  cat /etc/*-release
+    2  docker run -it ubuntu /bin/bash 
+	docker run(실행, 메모리에서 containner을 실행), -name(컨테이너 이름)		nginx
+	ubuntu(이미지(하나의 파일)를 실행, docker hub 사이트에서 가져온거),
+	bin/bash(패키지경로, 써도 되고 안써도 무관)
+    3  cat /etc/*-release
+    4  docker run -it debian /bin/bash
+    5  docker ps
+    6  docker run -d -p 80:80 nginx
+	-d : back ground해라/detach
+	-p : publish list
+    7  docker ps
+    8  free -m
+    9  docker run -d -p 1433:1433 -e MYSQL_ROOT_PASSWORD=password mysql
+   10  docker ps
+
+	(나온 표에서 다음과 같은 부분 앞 4글자)
+	0d3b0ff9aea2  
+
+   11  docker exec -it 0d3b bash
+
+
+나갈때는 exit enter
+ctrl+p, ctrl+q
+
+
+======================================================
+
+vm windows2016만들고 ssd만들고 linux로접속해보기
+
+docker run -d -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd1234' -p 1433:1433 microsoft/mssql-server-linux
+	linux 실행파일 설치(?)
+
+docker stats
+	메모리 상태
+
+docker run -d -e 'ROOT_PASSWORD=password' -p 3306:3306 mysql
+
+
+docker stop afc 
+	접속 죽이기(?)
+======================================================
+<<명령어 자세한 설명>>
+
+docker network ls
+	ls : list
+
+docker run --name con1 -it centos
+docker run --name con2 -it centos /bin/bash
+	이미지 다음에 쓰는 건 자동으로 실행되는 명령어(이를 지정해주지 않아도 됨)임
+	
+
+docker run --name con3 -it centos cat /etc/hosts
+docker run --name con4 -it centos ping 8.8.8.8 -c 3
+
+docker ps
+	con1/con2만 나옴 이러면 두개만 실행중인 거임.
+docker ps -a
+	실행중/실행 중이 아닌 걸 모두 보여줌 all
+docker ps -a -q
+	컨테이너 아이디만 보여줌
+
+docker rm con4
+	컨테이너 삭제 but 중지된 컨테이너만 삭제 가능
+docker rm con2 -f
+	강제 중지
+
+
+docker rm $(docker ps -aq) -f
+	달러안 순차적으로 다 실행
+	모두 중지
+
+ㄱ. docker run --name myweb -d -p 8080:80 nginx
+	컨테이너 이름 : myweb -d : detach(떼어 놓는거, 분리)
+	8080은 docker host로 외부에서 들어옴/80 : 내부의 80으로 연결시켜줌, 저장하는 곳
+	run은 이미지를 실행(이미지가 주임!)
+ㄴ. docker run --name con1 -it alpine /bin/sh
+	직접 들어가는거
+    (ctrl+p / ctrl+q : 중지하지 않고 컨테이너 빠져나오기)
+ㄷ. docker container exec -it myweb /bin/bash
+	돌고 있는 컨테이너 접근, back ground/detach 다 접근&실행 가능
+	exec는 컨테이너 실행 (컨테이너가 주임!)
+
+exit
+	죽을 수도 안죽을수도 있음
+
+docker ps -f status=exited
+	-f: --filter filter   Filter output based on conditions provided
+     	   --format string
+	중지된 나간 상태를 f하는거...???
+
+docker ps --help | grep \\-f
+	grep : global regular expression print 테스트 파일 문자 검색한다.
+	역슬레시(\\) 무조건 써야함.
+	cf. 구글링이랑 비슷한 의미의 개념
+
+docker image prune
+	컨테이너에서 쓰고 있지 않은 이미지 삭제/하드디스크 공간 확보
+====================================================
+wget http://down.cloudshell.kr/docker/Dockerfile
+	다운로드
+ls -l
+	list 확인
+docker build -t mying .
+	image이름이 mying
+docker images
+	이제 mying이름의 image생성된거 확인
+
+  202  docker volume ls
+  203  docker volume create nginxroot
+  204  docker volume ls
+  205  docker volume inspect nginxroot
+  206  docker run --name mynginx -d -p 80:80 -v nginxroot:/data nginx
+  207  docker exec -it mynginx /bin/bash
+  208  /var/lib/docker/volumes/nginxroot/_data
+  209  ls -l /var/lib/docker/volumes/nginxroot/_data
+  210  cd /var/lib/docker/volumes/nginxroot/_data
+  211  touch hisfile.txt
+  212  ls -l
+  213  pwd
+  214  docker exec -it mynginx
+  215  docker exec -it mynginx /bin/bash
+  216  docker stop mynginx
+  217  docker rm mynginx
+	rm : remove
+  218  ls -l
+  219  pwd
+  220  docker ps
+  221  docker run --name mynginx -d -p 80:80 -v nginxroot:/usr/share/nginx/html/ nginx
+	컨테이너 접근.
+  222  history
+  223  exit
+  224  cd
+  225  curl localhost
+  226  cd /var/lib/docker/volumes/nginxroot/_data
+  227  echo "ddddd you" > index.html
+  228  ls -l
+  229  curl localhost
+  230  docker ps
+  231  docker rm $(docker ps -aq) -f
+  232  docker run --name my -d -p 80:80 -v nginxroot:/usr/share/nginx/html/ nginx
+  233  curl localhost
+	중지시키고 이름바꾸고 다시 실행해봐도 "ddddd you" 결과로 나옴. 접근 가능
+	여러개 복제된 컨테이너들(분산처리)이, 경로를 잡아 결국 동일한 저장소로 접근.
+	외부 directory를 docker 저장소로 쓸 수 있어서 가능한 일
+	clustering 기술을 무조건 써야한다. 서비스 죽으면 안되니깐(비용은 올라감).
+
+docker host들 2대 이상 쓰는게 제일좋음. 컨테이너 복제하구..
+
+
+  237  docker network ls
+  238  docker network create -d bridge mynet
+	docker도 다 네트워크가 있다.
+=========================================================
+
+FROM ubuntu
+MAINTAINER Yongshik Lee
+
+RUN apt-get update -y 
+RUN apt-get install nginx -y
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN chown -R www-data:www-data /var/lib/nginx
+
+VOLUME ["/data", "/etc/nginx/site-enabled", "/var/log/nginx"]
+
+WORKDIR /etc/nginx
+
+/var/lib/docker/volumes/nginxroot/_data
+/usr/share/nginx/html/index.html
+
+CMD ["nginx"]
+
+EXPOSE 80
+EXPOSE 443
+
+
+
+
+
+
+
