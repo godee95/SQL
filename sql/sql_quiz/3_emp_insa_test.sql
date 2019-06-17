@@ -1,3 +1,5 @@
+use shopdb;
+
 CREATE TABLE EMP
 (
 	ID CHAR(3) PRIMARY KEY NOT NULL,
@@ -16,9 +18,20 @@ INSERT INTO EMP VALUES ('970', '부장', '김영성', '3221', '리스크부', '2
 INSERT INTO EMP VALUES ('345', '대리', '오윤경', '1270', '마케팅부', '2');
 INSERT INTO EMP VALUES ('711', '과장', '이재중', '3914', '인사팀', '2');
 
-1. 어떤 직급이 있는지?
-2. 직급에 따라 어떤 고과를 받았는가
-3. 인사고과 주는 사람 구하기
-4. 인사고과를 몇명이 주고 있는가
+select * from emp;
 
+-- 1. 어떤 직급이 있는지?
+select distinct “POSITION” from emp;
+
+-- 2. 직급에 따라 어떤 고과를 받았는가
+select “POSITION”,GRADE from emp
+	group by “POSITION”;
+
+-- 3. 인사고과 주는 사람 구하기
+select PARTY_NM from emp
+	group by MANAGER_ID;
+
+-- 4. 인사고과를 몇명이 주고 있는가
+select MANAGER_ID, COUNT(PARTY_NM) from emp
+	group by MANAGER_ID;
 
